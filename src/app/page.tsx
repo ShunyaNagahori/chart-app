@@ -20,7 +20,7 @@ export default function Home() {
   const [selectedDataCountValue, setSelectedDataCountValue] = useState<number>(1);
   const [dataCount, setDataCount] = useState<number | null>(null);
   const [unitOfValue, setUnitOfValue] = useState<string | null>(null);
-  const [screenWidth, setScreenWidth] = useState<number>(800);
+  const [screenWidth, setScreenWidth] = useState<number>(600);
 
   useEffect(() => {
     setScreenWidth(window.innerWidth);
@@ -40,7 +40,7 @@ export default function Home() {
   let dataNameRef = useRef<HTMLInputElement | null>(null);
   let secondDataNameRef = useRef<HTMLInputElement | null>(null);
 
-  if (screenWidth < 800) {
+  if (screenWidth < 600) {
     return <p className='flex items-center justify-center h-screen'>スマートフォンは横向きで使用してください</p>; // 800px未満の場合、何も表示しない
   }
 
