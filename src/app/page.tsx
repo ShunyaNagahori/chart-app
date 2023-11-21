@@ -1,5 +1,5 @@
 'use client'
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import LineChart from '@/app/components/LineChart';
 import BarChart from '@/app/components/BarChart';
 import html2canvas from 'html2canvas';
@@ -20,11 +20,28 @@ export default function Home() {
   const [selectedDataCountValue, setSelectedDataCountValue] = useState<number>(1);
   const [dataCount, setDataCount] = useState<number | null>(null);
   const [unitOfValue, setUnitOfValue] = useState<string | null>(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   let titleRef = useRef<HTMLInputElement | null>(null);
   let unitOfValueRef = useRef<HTMLInputElement | null>(null);
   let dataNameRef = useRef<HTMLInputElement | null>(null);
   let secondDataNameRef = useRef<HTMLInputElement | null>(null);
+
+  if (screenWidth < 800) {
+    return <p className='flex items-center justify-center h-screen'>スマートフォンは横向きで使用してください</p>; // 800px未満の場合、何も表示しない
+  }
 
   const handleDataCountSubmit = (e: FormEvent) => {
     e.preventDefault();
