@@ -17,8 +17,10 @@ export default function Home() {
   const [secondDataName, setSecondDataName] = useState<string>('');
   const [selectedDataCountValue, setSelectedDataCountValue] = useState<number>(1);
   const [dataCount, setDataCount] = useState<number | null>(null);
+  const [unitOfValue, setUnitOfValue] = useState<string | null>(null);
 
   let titleRef = useRef<HTMLInputElement | null>(null);
+  let unitOfValueRef = useRef<HTMLInputElement | null>(null);
   let dataNameRef = useRef<HTMLInputElement | null>(null);
   let secondDataNameRef = useRef<HTMLInputElement | null>(null);
 
@@ -68,6 +70,12 @@ export default function Home() {
     }
   }
 
+  const handleUnitSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (unitOfValueRef.current && unitOfValueRef.current.value.trim() != '') {
+      setUnitOfValue(unitOfValueRef.current.value.trim())
+    }
+  }
 
   return (
     <main className='w-screen'>
@@ -84,8 +92,8 @@ export default function Home() {
                     className={`flex w-full border-gray-300 ${index == Object.entries(values).length - 1 ? 'border'  : 'border-x border-t'}`}
                     key={index}
                   >
-                    <p className='border-gray-300 w-4/5 border-r px-1 overflow-hidden overflow-ellipsis'>{key}</p>
-                    <p className='text-right px-1 w-1/5'>{value}</p>
+                    <p className='border-gray-300 w-3/5 border-r px-1 overflow-hidden overflow-ellipsis'>{key}</p>
+                    <p className='text-right px-1 w-2/5'>{value} {unitOfValue}</p>
                   </div>
                 ))
               }
@@ -99,8 +107,8 @@ export default function Home() {
                     className={`flex w-full border-gray-300 ${index == Object.entries(secondValues).length - 1 ? 'border'  : 'border-x border-t'}`}
                     key={index}
                   >
-                    <p className='border-gray-300 w-4/5 border-r px-1 overflow-hidden overflow-ellipsis'>{key}</p>
-                    <p className='text-right px-1 w-1/5'>{value}</p>
+                    <p className='border-gray-300 w-3/5 border-r px-1 overflow-hidden overflow-ellipsis'>{key}</p>
+                    <p className='text-right px-1 w-2/5'>{value} {unitOfValue}</p>
                   </div>
                 ))
               }
@@ -126,6 +134,31 @@ export default function Home() {
               </dl>
             )
           }
+          <div className='flex space-x-1'>
+            <div className='w-1/2'>
+              <p className='text-sm font-bold mb-1'>スタイル</p>
+              <span className='flex'>
+                <button className={`border w-5 text-center ${style == 1 ? 'bg-gray-300' : ''}`} value='1' onClick={(e) => setStyle(parseInt((e.target as HTMLButtonElement).value, 10))}>1</button>
+                <button className={`border w-5 text-center ${style == 2 ? 'bg-gray-300' : ''}`} value='2' onClick={(e) => setStyle(parseInt((e.target as HTMLButtonElement).value, 10))}>2</button>
+              </span>
+            </div>
+            {unitOfValue == null ? (
+              <div className='w-1/2'>
+                <p className='text-sm font-bold mb-1'>値の単位</p>
+                <form onSubmit={handleUnitSubmit}>
+                  <div className='flex justify-between'>
+                    <input ref={unitOfValueRef} type='text' className='border-gray-300 border px-1 outline-none w-2/3 block' required />
+                    <button type='submit' className='border-gray-300 border px-2 ml-2 w-1/3'>登録</button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              <div className='w-1/2'>
+                <dd className='text-sm font-bold mb-1'>値の単位</dd>
+                <dt>{unitOfValue}</dt>
+              </div>
+            )}
+          </div>
           <div>
             <p className='text-sm font-bold mb-1'>値</p>
             {dataCount === null && (
@@ -202,13 +235,6 @@ export default function Home() {
                 </span>
               </form>
             )}
-          </div>
-          <div>
-            <p className='text-sm font-bold'>スタイル</p>
-            <span className='flex'>
-              <button className={`border w-5 text-center ${style == 1 ? 'bg-gray-300' : ''}`} value='1' onClick={(e) => setStyle(parseInt((e.target as HTMLButtonElement).value, 10))}>1</button>
-              <button className={`border w-5 text-center ${style == 2 ? 'bg-gray-300' : ''}`} value='2' onClick={(e) => setStyle(parseInt((e.target as HTMLButtonElement).value, 10))}>2</button>
-            </span>
           </div>
         </div>
       </div>
