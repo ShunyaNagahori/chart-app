@@ -20,20 +20,19 @@ export default function Home() {
   const [selectedDataCountValue, setSelectedDataCountValue] = useState<number>(1);
   const [dataCount, setDataCount] = useState<number | null>(null);
   const [unitOfValue, setUnitOfValue] = useState<string | null>(null);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState<number>(800);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleResize = () => {
-        setScreenWidth(window.innerWidth);
-      };
+    setScreenWidth(window.innerWidth);
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
 
-      window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
 
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   let titleRef = useRef<HTMLInputElement | null>(null);
