@@ -23,15 +23,17 @@ export default function Home() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+      };
 
-    window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
   }, []);
 
   let titleRef = useRef<HTMLInputElement | null>(null);
