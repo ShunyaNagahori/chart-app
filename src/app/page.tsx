@@ -40,10 +40,6 @@ export default function Home() {
   let dataNameRef = useRef<HTMLInputElement | null>(null);
   let secondDataNameRef = useRef<HTMLInputElement | null>(null);
 
-  if (screenWidth < 600) {
-    return <p className='flex items-center justify-center h-screen'>スマートフォンは横向きで使用してください</p>; // 800px未満の場合、何も表示しない
-  }
-
   const handleDataCountSubmit = (e: FormEvent) => {
     e.preventDefault();
     setDataCount(selectedDataCountValue)
@@ -118,7 +114,13 @@ export default function Home() {
   }
 
   return (
-    <main className='w-screen'>
+    <main className='relative w-screen'>
+      {screenWidth < 600 && (
+        <>
+          <div className='absolute inset-0 flex items-center justify-center h-screen w-screen bg-black opacity-40 z-10'></div>
+          <p className='absolute inset-0 flex items-center justify-center h-screen w-screen text-white text-xl z-30'>スマートフォンは横向きで使用してください</p>
+        </>
+      )}
       <div className='flex'>
         <div className='p-2 space-y-2 w-2/3' id='pdf-target'>
           {style === 1 && <BarChart values={values} title={title} dataName={dataName} dataCount={dataCount} secondValues={secondValues} secondDataName={secondDataName} />}
